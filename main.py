@@ -4,9 +4,6 @@ running instances (VMs) on a cloud provider.
 
 It should show me a report of the instances that are running for a certain period of time. 
 (That time can be configurable eventually )
-Anybody who has bandwidth from their projects can you pick this up?
-Before you start implementing please setup a 1:1 with me where we can go over the plan of implementation for the same. 
-I would like to understand how you would solve this.
 
 """
 import schedule

@@ -1,0 +1,8 @@
+{
+    "VM Name": "py-assignmnet-vm",
+    "VM ID": "/subscriptions/ec4fb7b4-423c-4d77-b36f-350d022cbca6/resourceGroups/py-assignment-1/providers/Microsoft.Compute/virtualMachines/py-assignmnet-vm",
+    "VM Resource Group": "py-assignment-1",
+    "VM Subscription ID": "ec4fb7b4-423c-4d77-b36f-350d022cbca6",
+    "Region": "centralus",
+    "VM type": "Microsoft.Compute/virtualMachines"
+}
