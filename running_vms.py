@@ -15,26 +15,31 @@ import time
 from datetime import datetime
 import pytz
 import json 
-
-
-LOCATION = 'us-east-1'
-
-# Resource Group
-GROUP_NAME = 'py-assignment-1'
+import configparser
 
 def get_credentials():
-    subscription_id = os.environ['AZURE_SUBSCRIPTION_ID']
+    config = configparser.ConfigParser()
+    config.read('test_config.ini')
+
+    subscription_id = config['AZURE']['SUBSCRIPTION_ID']
+    client_secret = config['AZURE']['CLIENT_SECRET']
+    client_id = config['AZURE']['CLIENT_ID']
+    tenant_id = config['AZURE']['TENANT_ID']
+   
+    report_days = config['REPORT']['DAYS']
+
     credentials = ClientSecretCredential(
-        client_secret=os.environ['AZURE_CLIENT_SECRET'],
-        client_id=os.environ['AZURE_CLIENT_ID'],
-        tenant_id=os.environ['AZURE_TENANT_ID']
+        client_secret=client_secret,
+        client_id=client_id,
+        tenant_id=tenant_id
     )
-    return credentials, subscription_id
+    
+    return credentials, subscription_id, report_days
 
 def run_example():
     
     # Create all clients with an Application (service principal) token provider
-    credentials, subscription_id = get_credentials()
+    credentials, subscription_id, report_days = get_credentials()
     compute_client = ComputeManagementClient(credentials, subscription_id)
     day = datetime.today().strftime('%Y-%m-%d')
     dt = datetime.strptime(day, "%Y-%m-%d")
@@ -47,8 +52,8 @@ def run_example():
         
         print('\nList VMs in subscription -')
         for vm in compute_client.virtual_machines.list_all():
-            if abs((vm.time_created - dt_with_timezone).days) >= 0:
-                print("VM name which is running from last 7 or more than 7 days -", vm.name) 
+            if abs((vm.time_created - dt_with_timezone).days) >= int(report_days):
+                print(f"VM name which is running from last {report_days} or more than {report_days} days -", vm.name) 
                 id = vm.id
                 splitIDbyslash = id.split('/')
                 time_created = vm.time_created.strftime("%Y/%m/%d %H:%M")
@@ -71,7 +76,7 @@ def run_example():
                     "VM time_created": time_created
                     }
                 info.append(vm_info)
-        file = open("report.json","a")
+        file = open(f"{day}.json","a")
                 
         file.write(json.dumps(info))
         file.close()
