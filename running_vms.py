@@ -40,39 +40,42 @@ def run_example():
     dt = datetime.strptime(day, "%Y-%m-%d")
     timezone = pytz.UTC
     dt_with_timezone = timezone.localize(dt)
+    info = []
 
     try:
         # List VM in subscription
+        
         print('\nList VMs in subscription -')
         for vm in compute_client.virtual_machines.list_all():
             if abs((vm.time_created - dt_with_timezone).days) >= 0:
                 print("VM name which is running from last 7 or more than 7 days -", vm.name) 
-                with open("report.json","a") as textfile:
-                    id = vm.id
-                    splitIDbyslash = id.split('/')
-                    time_created = vm.time_created.strftime("%Y/%m/%d %H:%M")
-                    # print("os profile",vm.os_profile.linux_configuration)
-                    if vm.os_profile.linux_configuration is not None:
-                        osName = "linux"
-                    elif vm.os_profile.windows_configuration is not None:
-                        osName = "Window"
-                        
-                    vm_info = {
-                        "VM Name": vm.name,
-                        "VM ID": vm.id,
-                        "VM Resource Group": splitIDbyslash[4],
-                        "VM operating system": osName,
-                        "VM Subscription ID": splitIDbyslash[2],
-                        "Region": vm.location,
-                        "VM type": vm.type,
-                        "VM id" : vm.vm_id,
-                        "Provisioning state": vm.provisioning_state,
-                        "VM time_created": time_created
-                      }
-                    textfile.write(json.dumps(vm_info))
-
-                    print("added to the file")
-                    textfile.close()
+                id = vm.id
+                splitIDbyslash = id.split('/')
+                time_created = vm.time_created.strftime("%Y/%m/%d %H:%M")
+                # print("os profile",vm.os_profile.linux_configuration)
+                if vm.os_profile.linux_configuration is not None:
+                    osName = "linux"
+                elif vm.os_profile.windows_configuration is not None:
+                    osName = "Window"
+                
+                vm_info = {
+                    "VM Name": vm.name,
+                    "VM ID": vm.id,
+                    "VM Resource Group": splitIDbyslash[4],
+                    "VM operating system": osName,
+                    "VM Subscription ID": splitIDbyslash[2],
+                    "Region": vm.location,
+                    "VM type": vm.type,
+                    "VM id" : vm.vm_id,
+                    "Provisioning state": vm.provisioning_state,
+                    "VM time_created": time_created
+                    }
+                info.append(vm_info)
+        file = open("report.json","a")
+                
+        file.write(json.dumps(info))
+        file.close()
+        print("Report is generated")
     except Exception as e:
         print(f"\nError: {e}")
      
