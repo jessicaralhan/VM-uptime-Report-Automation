@@ -9,7 +9,6 @@ It should show me a report of the instances that are running for a certain perio
 
 from azure.identity import ClientSecretCredential
 from azure.mgmt.compute import ComputeManagementClient
-import os
 import schedule
 import time
 from datetime import datetime
