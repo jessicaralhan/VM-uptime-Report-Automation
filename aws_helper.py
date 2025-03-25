@@ -3,7 +3,7 @@ import boto3
 import json
 import pytz
 
-def aws_report(aws_creds, report_days):
+def aws_report(aws_creds, report_days, logger):
         ec2_client = boto3.client('ec2', aws_access_key_id=aws_creds['access_key'], aws_secret_access_key=aws_creds['secret_key'], region_name=aws_creds['region'])
         response = ec2_client.describe_instances()
         ec2_info = []
@@ -16,8 +16,8 @@ def aws_report(aws_creds, report_days):
                 for instance in reservation['Instances']:
                     if abs((instance['LaunchTime'] - dt_with_timezone).days) >= int(report_days):
                         instance_name = instance['Tags'][0]['Value']
-                        print(f"VM name which is running from last {report_days} or more than {report_days} days -", instance_name)
-                        print("Running EC2 -",instance['Tags'][0]['Value'])
+                        logger.info(f"VM name which is running from last {report_days} or more than {report_days} days - {instance_name}")
+                        logger.info(f"Running EC2 - {instance_name}")
                         instance_id = instance['InstanceId']
                         instance_type = instance['InstanceType']
                         state = instance['State']['Name']
@@ -36,8 +36,8 @@ def aws_report(aws_creds, report_days):
             file = open(f"{day}.json","a")
             file.write(json.dumps(ec2_info))
             file.close()
-            print("EC2 report is generated")
+            logger.info("EC2 report is generated")
             
                 
         except Exception as e:
-            print(f"\nError: {e}")
+            logger.error("An error has occured. Check the credentials", e)

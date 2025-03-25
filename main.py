@@ -12,6 +12,15 @@ import time
 import configparser
 from azure_helper import azure_report
 from aws_helper import aws_report
+import logging
+
+logging.basicConfig(filename="application.log",
+                    format='%(asctime)s %(message)s',
+                    filemode='w')
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
 
 def get_configuration():
     config = configparser.ConfigParser()
@@ -43,7 +52,7 @@ def get_configuration():
             raise Exception("AWS and AZURE both are not present in config.ini file")
 
     except Exception as e:
-        print("Credentials error", e)    
+        logger.error("Credentials error. Recheck the crendentials", e)
         return
     report_days = config['REPORT']['DAYS']
 
@@ -52,14 +61,15 @@ def get_configuration():
 def running_vms():
     report_days, azure_creds, aws_creds = get_configuration()
     if azure_creds:
-        azure_report(report_days, azure_creds)
+        azure_report(report_days, azure_creds, logger)
     if aws_creds:
-        aws_report(aws_creds, report_days)
+        aws_report(aws_creds, report_days, logger)
 
 
 if __name__ == "__main__":
-    schedule.every().day.at("18:00").do(running_vms)
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
+    # schedule.every().day.at("18:00").do(running_vms)
+    # while True:
+    #     schedule.run_pending()
+    #     time.sleep(1)
 
+    running_vms()

@@ -4,7 +4,7 @@ from datetime import datetime
 import pytz
 import json 
 
-def azure_report(report_days, azure_creds):
+def azure_report(report_days, azure_creds, logger):
         credentials = ClientSecretCredential(
             client_secret=azure_creds['client_secret'],
             client_id=azure_creds['client_id'],
@@ -19,7 +19,7 @@ def azure_report(report_days, azure_creds):
         try:
             for vm in compute_client.virtual_machines.list_all():
                 if abs((vm.time_created - dt_with_timezone).days) >= int(report_days):
-                    print(f"VM name which is running from last {report_days} or more than {report_days} days -", vm.name) 
+                    logger.info(f"VM name which is running from last {report_days} or more than {report_days} days - {vm.name}") 
                     id = vm.id
                     splitIDbyslash = id.split('/')
                     time_created = vm.time_created.strftime("%Y/%m/%d %H:%M")
@@ -45,7 +45,7 @@ def azure_report(report_days, azure_creds):
                     
             file.write(json.dumps(info))
             file.close()
-            print("VM report is generated")
+            logger.info("VM report is generated")
         except Exception as e:
-            print(f"\nError: {e}")
+            logger.error("Recheck the credentials", e)
 
