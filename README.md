@@ -33,35 +33,29 @@ Get credentials from AZURE and AWS portal
 In test_config.ini file if you want generate a report of AWS VMs then set the credentials of AWS and remove the AZURE section and vice versa.
 
 **AZURE credentials**
-
-SUBSCRIPTION_ID = <SUBSCRIPTION_ID>\
-CLIENT_SECRET = <CLIENT_SECRET>\
-CLIENT_ID = <CLIENT_ID>\
+```
+SUBSCRIPTION_ID = <SUBSCRIPTION_ID>
+CLIENT_SECRET = <CLIENT_SECRET>
+CLIENT_ID = <CLIENT_ID>
 TENANT_ID = <TENANT_ID>
-
-Steps to configure CLIENT_SECRET ID 
+```
+You can get SUBSCRIPTION_ID, CLIENT_ID, TENANT_ID by logging into Azure Portal and following are the steps to get CLIENT_SECRET.
 1) Login to the Azure Portal
 2) Navigate to Azure Active Directory
 3) Select App Registrations, locate the Azure AD App that you're trying to find the Client ID and Client Secret Key for
 4) Within the Azure AD App, select Certificates & Secrets 
 
 **AWS credentials**
-
-ACCESS_KEY = <ACCESS_KEY>\
-SECRET_KEY = <SECRET_KEY>\
+```
+ACCESS_KEY = <ACCESS_KEY>
+SECRET_KEY = <SECRET_KEY>
 REGION = <AWS_REGION>
-
-To configure AWS access key and secret key follow this link -\
-https://www.msp360.com/resources/blog/how-to-find-your-aws-access-key-id-and-secret-access-key/#:~:text=1%20Go%20to%20Amazon%20Web,and%20Secret%20Access%20Key)%20option.
-
-### **Environment Variables for Sensitive Data**
-   It's better to keep sensitive information (like credentials) out of repositories. You can add environment variables for storing the credentials securely.
-
+```
+To get AWS access key and secret key follow this [link](https://www.msp360.com/resources/blog/how-to-find-your-aws-access-key-id-and-secret-access-key/#:~:text=1%20Go%20to%20Amazon%20Web,and%20Secret%20Access%20Key%20option.)
 
 ### **Scheduling the Script**
-   Set up Task Scheduler to run the script daily.\
-    1) Schedule the script to run every day at 8 AM:
+   Set up Task Scheduler to run the script daily. Schedule the script to run every day at 8 AM:
 
 ### **Logging**
-   Consider including logging so that users can track the execution and detect the errors in a log file.
+   Added logging so that users can track the execution and detect the errors in a log file you can check the application.log file. 
 
