@@ -51,7 +51,7 @@ REGION = <AWS_REGION>
 To configure AWS access key and secret key follow this link -\
 https://www.msp360.com/resources/blog/how-to-find-your-aws-access-key-id-and-secret-access-key/#:~:text=1%20Go%20to%20Amazon%20Web,and%20Secret%20Access%20Key)%20option.
 
-In test_config.ini file if you want generate a report of AWS VMs then set the credentials of AWS here and remove the AZURE section and vice versa.
+In test_config.ini file if you want generate a report of AWS VMs then set the credentials of AWS and remove the AZURE section and vice versa.
 
 ### **Environment Variables for Sensitive Data**
    It's better to keep sensitive information (like credentials) out of repositories. You can add environment variables for storing the credentials securely.

@@ -74,9 +74,8 @@ def running_vms():
 
 
 if __name__ == "__main__":
-    # schedule.every().day.at("18:00").do(running_vms)
-    # while True:
-    #     schedule.run_pending()
-    #     time.sleep(1)
-    running_vms()
+    schedule.every().day.at("18:00").do(running_vms)
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
 # help(running_vms)
