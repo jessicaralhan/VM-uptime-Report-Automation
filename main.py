@@ -17,7 +17,7 @@ def get_configuration():
     config = configparser.ConfigParser()
     config.read('test_config.ini')
     try:
-        if 'AZURE' in config:
+        if 'AZURE' in config.sections():
             subscription_id = config['AZURE']['SUBSCRIPTION_ID']
             client_secret = config['AZURE']['CLIENT_SECRET']
             client_id = config['AZURE']['CLIENT_ID']
@@ -29,8 +29,8 @@ def get_configuration():
                 "tenant_id":tenant_id,
             }
             aws_credentials = None
-        elif 'AWS' in config:
-            access_key = config['AWS']['ACCESS_KEY']
+        elif 'AWS' in config.sections():
+            access_key = config['AWS']['ACCESS_KEY']    
             secret_key = config['AWS']['SECRET_KEY']
             region = config['AWS']['REGION']
             aws_credentials = {
@@ -39,9 +39,12 @@ def get_configuration():
                 "region": region,
             }     
             azure_credentials = None
+        else:
+            raise Exception("AWS and AZURE both are not present in config.ini file")
+
     except Exception as e:
-        print("error", e)
-        
+        print("Credentials error", e)    
+        return
     report_days = config['REPORT']['DAYS']
 
     return report_days, azure_credentials, aws_credentials
@@ -59,5 +62,4 @@ if __name__ == "__main__":
     while True:
         schedule.run_pending()
         time.sleep(1)
-
 
