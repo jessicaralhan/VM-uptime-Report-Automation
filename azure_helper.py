@@ -5,6 +5,16 @@ import pytz
 import json 
 
 def azure_report(report_days, azure_creds, logger):
+        '''
+        Getting the AZURE credentials and generating a report for all the instances that have been running since {report_days}.
+
+        args:
+            report_days : number of days since an instance in running
+            azure_creds : getting the azure credentials
+            logger : logger object to get generate logs 
+
+        and appending it in .json file which is generated daily based on the date
+        '''
         credentials = ClientSecretCredential(
             client_secret=azure_creds['client_secret'],
             client_id=azure_creds['client_id'],
@@ -41,11 +51,11 @@ def azure_report(report_days, azure_creds, logger):
                         "VM Launch Time": time_created
                         }
                     info.append(vm_info)
-            file = open(f"{day}.json","a")
+            file = open(f"Azure_{day}.json","a")
                     
             file.write(json.dumps(info))
             file.close()
             logger.info("VM report is generated")
         except Exception as e:
             logger.error("Recheck the credentials", e)
-
+# help(azure_report)

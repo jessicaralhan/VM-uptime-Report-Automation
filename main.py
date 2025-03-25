@@ -21,8 +21,10 @@ logging.basicConfig(filename="application.log",
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-
 def get_configuration():
+    '''
+        Configuration function which is reading from config.ini sections to get the credentials for AWS and AZURE 
+    '''
     config = configparser.ConfigParser()
     config.read('test_config.ini')
     try:
@@ -58,7 +60,12 @@ def get_configuration():
 
     return report_days, azure_credentials, aws_credentials
 
+# help(get_configuration)
+
 def running_vms():
+    '''
+    running the code to get the report
+    '''
     report_days, azure_creds, aws_creds = get_configuration()
     if azure_creds:
         azure_report(report_days, azure_creds, logger)
@@ -71,5 +78,5 @@ if __name__ == "__main__":
     # while True:
     #     schedule.run_pending()
     #     time.sleep(1)
-
     running_vms()
+# help(running_vms)
