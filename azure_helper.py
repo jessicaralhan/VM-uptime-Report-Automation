@@ -51,7 +51,7 @@ def azure_report(report_days, azure_creds, logger):
                         "VM Launch Time": time_created
                         }
                     info.append(vm_info)
-            file = open(f"Azure_{day}.json","a")
+            file = open(f"azure_{day}.json","a")
                     
             file.write(json.dumps(info))
             file.close()

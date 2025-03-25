@@ -47,7 +47,7 @@ def aws_report(aws_creds, report_days, logger):
                             "VM Launch Time": launch_time
                         }
                         ec2_info.append(instance_info)
-            file = open(f"AWS_{day}.json","a")
+            file = open(f"aws_{day}.json","a")
             file.write(json.dumps(ec2_info))
             file.close()
             logger.info("EC2 report is generated")

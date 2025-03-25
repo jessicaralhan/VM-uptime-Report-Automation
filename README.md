@@ -1,13 +1,14 @@
-## **Daily VM Uptime Report Automation**
+# Daily VM Uptime Report Automation
 
 Automated script which runs on a daily basis and gets a list a running instances(VMs) from cloud provider Azure/AWS and generates a report.
 
-### **Pre-requisties**
+## Pre-requisties
 - python
 - pip
 - venv 
 
-### **To run this script**
+
+## To run this script
 
 1. Clone the repository 
 ``` 
@@ -23,16 +24,30 @@ pip install pytz
 pip install jsonlib
 pip install configparser
 ```
-3. Run the code with 
-```
-python3 {file_name}
-```
-Get credentials from AZURE and AWS portal 
+3. [Do the Configuration](#configuration)
 
-### **Configuration** 
-In test_config.ini file if you want generate a report of AWS VMs then set the credentials of AWS and remove the AZURE section and vice versa.
+4. Run the code with 
+```
+python3 main.py
+```
 
-**AZURE credentials**
+
+### Features
+   Logging - Added logging so that users can track the execution and detect the errors in a log file you can check the application.log file. 
+
+
+## Configuration
+In test_config.ini file set the credentials of AWS and remove the AZURE section if you want to generate the report for AWS instances and vice versa.
+
+**For AWS instances set the following credentials**
+```
+ACCESS_KEY = <ACCESS_KEY>
+SECRET_KEY = <SECRET_KEY>
+REGION = <AWS_REGION>
+```
+To get AWS access key and secret key follow this [link](https://www.msp360.com/resources/blog/how-to-find-your-aws-access-key-id-and-secret-access-key/#:~:text=1%20Go%20to%20Amazon%20Web,and%20Secret%20Access%20Key%20option.)
+
+**For AZURE instances set the following credentials**
 ```
 SUBSCRIPTION_ID = <SUBSCRIPTION_ID>
 CLIENT_SECRET = <CLIENT_SECRET>
@@ -45,17 +60,5 @@ You can get SUBSCRIPTION_ID, CLIENT_ID, TENANT_ID by logging into Azure Portal a
 3) Select App Registrations, locate the Azure AD App that you're trying to find the Client ID and Client Secret Key for
 4) Within the Azure AD App, select Certificates & Secrets 
 
-**AWS credentials**
-```
-ACCESS_KEY = <ACCESS_KEY>
-SECRET_KEY = <SECRET_KEY>
-REGION = <AWS_REGION>
-```
-To get AWS access key and secret key follow this [link](https://www.msp360.com/resources/blog/how-to-find-your-aws-access-key-id-and-secret-access-key/#:~:text=1%20Go%20to%20Amazon%20Web,and%20Secret%20Access%20Key%20option.)
-
-### **Scheduling the Script**
-   Set up Task Scheduler to run the script daily. Schedule the script to run every day at 8 AM:
-
-### **Logging**
-   Added logging so that users can track the execution and detect the errors in a log file you can check the application.log file. 
-
+**For scheduling the script**
+You need to set <DAYS> under <REPORT> section according to your preference i.e. for how many days you need to get the running VMs. By default the number of days is seven.
