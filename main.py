@@ -7,19 +7,15 @@ It should show me a report of the instances that are running for a certain perio
 
 """
 
-import schedule
-import time
+import logging
 import configparser
 from azure_helper import azure_report
 from aws_helper import aws_report
-import logging
+from datetime import datetime
 
-logging.basicConfig(filename="application.log",
-                    format='%(asctime)s %(message)s',
-                    filemode='w')
-
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)
+# Logger setup for Azure Function
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 def get_configuration():
     '''
@@ -34,10 +30,10 @@ def get_configuration():
             client_id = config['AZURE']['CLIENT_ID']
             tenant_id = config['AZURE']['TENANT_ID']
             azure_credentials = {
-                "subscription_id":subscription_id,
-                "client_secret":client_secret,
-                "client_id":client_id,
-                "tenant_id":tenant_id,
+                "subscription_id": subscription_id,
+                "client_secret": client_secret,
+                "client_id": client_id,
+                "tenant_id": tenant_id,
             }
             aws_credentials = None
         elif 'AWS' in config.sections():
@@ -54,28 +50,17 @@ def get_configuration():
             raise Exception("AWS and AZURE both are not present in config.ini file")
 
     except Exception as e:
-        logger.error("Credentials error. Recheck the crendentials", e)
-        return
-    report_days = config['REPORT']['DAYS']
+        logger.error("Credentials error. Recheck the credentials", exc_info=True)
+        return None, None, None
 
+    report_days = config['REPORT']['DAYS']
     return report_days, azure_credentials, aws_credentials
 
-# help(get_configuration)
-
-def running_vms():
+def running_vms(report_days, azure_creds=None, aws_creds=None):
     '''
-    running the code to get the report
+    Running the code to get the report for running VMs
     '''
-    report_days, azure_creds, aws_creds = get_configuration()
     if azure_creds:
         azure_report(report_days, azure_creds, logger)
     if aws_creds:
         aws_report(aws_creds, report_days, logger)
-
-
-if __name__ == "__main__":
-    schedule.every().day.at("18:00").do(running_vms)
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
-# help(running_vms)
