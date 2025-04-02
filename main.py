@@ -12,6 +12,7 @@ import configparser
 from azure_helper import azure_report
 from aws_helper import aws_report
 from datetime import datetime
+from gcp_helper import gcp_report
 
 # Logger setup for Azure Function
 logging.basicConfig(level=logging.INFO)
@@ -46,6 +47,17 @@ def get_configuration():
                 "region": region,
             }     
             azure_credentials = None
+        elif 'GCP' in config.sections():
+            private_key = config['GCP']['PRIVATE_KEY']
+            project_id = config['GCP']['PROJECT_ID']
+            client_id = config['GCP']['CLIENT_ID']
+            gcp_credentials = {
+                "private_key": private_key,
+                "project_id": project_id,
+                "client_id": client_id,
+            }
+            azure_credentials = None
+            aws_credentials = None
         else:
             raise Exception("AWS and AZURE both are not present in config.ini file")
 
@@ -54,9 +66,9 @@ def get_configuration():
         return None, None, None
 
     report_days = config['REPORT']['DAYS']
-    return report_days, azure_credentials, aws_credentials
+    return report_days, azure_credentials, aws_credentials, gcp_credentials
 
-def running_vms(report_days, azure_creds=None, aws_creds=None):
+def running_vms(report_days, azure_creds=None, aws_creds=None, gcp_creds=None):
     '''
     Running the code to get the report for running VMs
     '''
@@ -64,3 +76,5 @@ def running_vms(report_days, azure_creds=None, aws_creds=None):
         azure_report(report_days, azure_creds, logger)
     if aws_creds:
         aws_report(aws_creds, report_days, logger)
+    if gcp_creds:
+        gcp_report(gcp_creds, report_days, logger)
