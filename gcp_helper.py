@@ -42,7 +42,7 @@ def gcp_report(
             if response.instances:
                 all_instances[zone].extend(response.instances)
                 for instance in response.instances:
-                    if instance.status == "RUNNING":
+                    if instance.status:
                         logger.info(f"Running VM: {instance.name} in {zone}")
                         vm_info = {
                             "VM Name": instance.name,
@@ -53,7 +53,6 @@ def gcp_report(
                         }
                         gcp_info.append(vm_info)
 
-        # Save report to a JSON file
         report_filename = f"gcp_{day}.json"
         file = open(report_filename, "w")
         file.write(json.dumps(gcp_info, indent=4))
@@ -64,6 +63,7 @@ def gcp_report(
     except Exception as e:
         logger.error(f"An error occurred while fetching instances: {e}")
 
+  
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")

@@ -51,10 +51,16 @@ def get_configuration():
             private_key = config['GCP']['PRIVATE_KEY']
             project_id = config['GCP']['PROJECT_ID']
             client_id = config['GCP']['CLIENT_ID']
+            token_uri = config['GCP']['TOKEN_URI']
+            client_email = config['GCP']['CLIENT_EMAIL']
+            auth_uri = config['GCP']['AUTH_URI']
             gcp_credentials = {
                 "private_key": private_key,
                 "project_id": project_id,
                 "client_id": client_id,
+                "token_uri": token_uri,
+                "client_email": client_email,
+                "auth_uri": auth_uri
             }
             azure_credentials = None
             aws_credentials = None
@@ -77,4 +83,5 @@ def running_vms(report_days, azure_creds=None, aws_creds=None, gcp_creds=None):
     if aws_creds:
         aws_report(aws_creds, report_days, logger)
     if gcp_creds:
-        gcp_report(gcp_creds, report_days, logger)
+        gcp_report(gcp_creds["project_id"], logger, gcp_creds)
+
