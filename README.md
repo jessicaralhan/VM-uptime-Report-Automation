@@ -64,11 +64,17 @@ You can get SUBSCRIPTION_ID, CLIENT_ID, TENANT_ID by logging into Azure Portal a
 **For GCP instances set the following credentials**
 ```
 PROJECT_ID = <PROJECT_ID>
-CLIENT_ID =	<CLIENT_ID>
+CLIENT_ID = <CLIENT_ID>
 CLIENT_EMAIL = <CLIENT_EMAIL>
 AUTH_URI = <AUTH_URI>
 TOKEN_URI= <TOKEN_URI>
 ```
+Steps to get GCP credentials.
+1) Go to Google Cloud Console and create/select a project → this gives you PROJECT_ID.
+2) Enable Compute Engine API from APIs & Services > Library.
+3) Create a Service Account from IAM & Admin > Service Accounts, and assign it a role like "Viewer".
+4) Generate a JSON key for the service account under the "Keys" tab → download the .json file.
+5) Extract values from the JSON file:
 
 **For scheduling the script**
 You need to set <DAYS> under <REPORT> section according to your preference i.e. for how many days you need to get the running VMs. By default the number of days is seven.
