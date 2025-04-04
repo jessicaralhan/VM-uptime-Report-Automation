@@ -5,16 +5,20 @@ from collections.abc import Iterable
 from datetime import datetime
 import json
 from google.cloud import compute_v1
+from google.oauth2 import service_account
 import os
 
-# Set Google Cloud credentials
-credential_path = "/home/jessica-ralhan/Downloads/gcp-running-vms-f8e375ec0bea.json"
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credential_path
+# credential_path = "/home/jessica-ralhan/Downloads/gcp-running-vms-f8e375ec0bea.json"
+# os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credential_path
 
 
 def gcp_report(
     project_id: str, logger, 
 ) -> dict[str, Iterable[compute_v1.Instance]]:
+    if "GOOGLE_APPLICATION_CREDENTIALS" not in os.environ:
+        logger.warning("GOOGLE_APPLICATION_CREDENTIALS is not set. Set it via .env or in code.")
+        return {}
+
     """
     Returns a dictionary of all running instances present in a project, grouped by their zone.
 
@@ -26,6 +30,8 @@ def gcp_report(
         A dictionary with zone names as keys (in form of "zones/{zone_name}") and
         iterable collections of Instance objects as values.
     """
+    # credentials = service_account.Credentials.from_service_account_info(gcp_creds)
+
     instance_client = compute_v1.InstancesClient()
     request = compute_v1.AggregatedListInstancesRequest(project=project_id, max_results=50)
 
@@ -65,9 +71,9 @@ def gcp_report(
 
   
 
-if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
-    logger = logging.getLogger("GCP_Report")
+# if __name__ == "__main__":
+#     logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+#     logger = logging.getLogger("GCP_Report")
     
-    PROJECT_ID = "gcp-running-vms"
-    gcp_report(PROJECT_ID, logger)
+#     PROJECT_ID = "gcp-running-vms"
+#     gcp_report(PROJECT_ID, logger) 
