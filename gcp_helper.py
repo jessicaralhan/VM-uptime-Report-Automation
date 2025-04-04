@@ -1,15 +1,10 @@
 from __future__ import annotations
-import logging
 from collections import defaultdict
 from collections.abc import Iterable
 from datetime import datetime
 import json
 from google.cloud import compute_v1
-from google.oauth2 import service_account
 import os
-
-# credential_path = "/home/jessica-ralhan/Downloads/gcp-running-vms-f8e375ec0bea.json"
-# os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credential_path
 
 
 def gcp_report(
@@ -30,7 +25,6 @@ def gcp_report(
         A dictionary with zone names as keys (in form of "zones/{zone_name}") and
         iterable collections of Instance objects as values.
     """
-    # credentials = service_account.Credentials.from_service_account_info(gcp_creds)
 
     instance_client = compute_v1.InstancesClient()
     request = compute_v1.AggregatedListInstancesRequest(project=project_id, max_results=50)
@@ -70,10 +64,3 @@ def gcp_report(
         logger.error(f"An error occurred while fetching instances: {e}")
 
   
-
-# if __name__ == "__main__":
-#     logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
-#     logger = logging.getLogger("GCP_Report")
-    
-#     PROJECT_ID = "gcp-running-vms"
-#     gcp_report(PROJECT_ID, logger) 
