@@ -23,6 +23,7 @@ pip install DateTime
 pip install pytz
 pip install jsonlib
 pip install configparser
+pip install google-cloud-compute
 ```
 3. [Do the Configuration](#configuration)
 
@@ -37,7 +38,7 @@ python3 main.py
 
 
 ## Configuration
-In test_config.ini file set the credentials of AWS and remove the AZURE section if you want to generate the report for AWS instances and vice versa.
+In test_config.ini file set the credentials of AWS and remove the AZURE and GCP section if you want to generate the report for AWS instances and vice versa.
 
 **For AWS instances set the following credentials**
 ```
@@ -60,5 +61,15 @@ You can get SUBSCRIPTION_ID, CLIENT_ID, TENANT_ID by logging into Azure Portal a
 3) Select App Registrations, locate the Azure AD App that you're trying to find the Client ID and Client Secret Key for
 4) Within the Azure AD App, select Certificates & Secrets 
 
+**For GCP instances set the following credentials**
+```
+PROJECT_ID = <PROJECT_ID>
+CLIENT_ID =	<CLIENT_ID>
+CLIENT_EMAIL = <CLIENT_EMAIL>
+AUTH_URI = <AUTH_URI>
+TOKEN_URI= <TOKEN_URI>
+```
+
 **For scheduling the script**
 You need to set <DAYS> under <REPORT> section according to your preference i.e. for how many days you need to get the running VMs. By default the number of days is seven.
+
